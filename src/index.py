@@ -10,7 +10,7 @@ import shutil
 import pyttsx3
 
 GITHUB_USER = "Aroiuqes2"
-REPO_NAME = "review-time"
+REPO_NAME = "review-timer"
 CURRENT_VERSION = "1.0.0"
 
 GITHUB_VERSION_URL = f"https://raw.githubusercontent.com/Aroiuqes2/review-timer/refs/heads/main/version.txt"
