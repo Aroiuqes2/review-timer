@@ -1,6 +1,11 @@
 import tkinter as tk
 import time
 import threading
+from tkinter import messagebox
+import requests
+
+CURRENT_VERSION = "1.0.0"
+GITHUB_REPO = "https://raw.githubusercontent.com/Aroiuqes2/review-timer/refs/heads/main/version.txt"
 
 # MAIN
 root = tk.Tk()
@@ -8,6 +13,10 @@ root.title("Review Time")
 root.geometry("1000x450")
 root.config(bg="#2C2F33")
 root.iconbitmap('icon.ico')
+
+updateRoot = tk.Tk()
+updateRoot.title("Check for Update")
+updateRoot.geometry('300x200')
 
 # FRAMING
 input_frame = tk.Frame(root, padx=20, pady=20, bg="#23272A", relief="ridge", bd=2)
@@ -44,6 +53,17 @@ time_dropdown = tk.OptionMenu(input_frame, selected_time, *time_options)
 time_dropdown.pack(pady=5)
 
 entries = []
+
+# UPDATE CHECK
+def check_update():
+    try:
+        response = requests.get(GITHUB_REPO, timeout=5)
+        latest_version = response.text.strip()
+
+        if latest_version != CURRENT_VERSION:
+            messagebox.showinfo("Update Tersedia", f"Versi terbaru {latest_version} tersedia!\nSilakan update.")
+    except Exception as e:
+        messagebox.showerror("Error", f"Tidak dapat mengecek update: {e}")
 
 # SUBMIT
 def submit():
@@ -96,6 +116,9 @@ def filter_data(*args):
             entry_frame.pack(pady=5, fill="x")
         else:
             entry_frame.pack_forget()
+
+tk.Label(updateRoot, text=f"Versi Saat Ini: {CURRENT_VERSION}", font=("Arial", 12)).pack(pady=10)
+tk.Button(updateRoot, text="Cek Update", command=check_update, font=("Arial", 12), bg="blue", fg="white").pack(pady=20)
 
 tk.Label(filter_frame, text="Search:", font=("Arial", 10), fg="white", bg="#2C2F33").pack(anchor="w")
 search_entry = tk.Entry(filter_frame, textvariable=search_var, font=("Arial", 12), width=30)
