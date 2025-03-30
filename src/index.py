@@ -109,7 +109,7 @@ def update_application():
             zip_ref.extractall("update_temp")
 
         # Dapatkan nama folder hasil ekstraksi
-        extracted_folder = f"update_temp/{REPO_NAME}-main"
+        extracted_folder = f"update_temp/{REPO_NAME}r-main"
 
         # Hapus file lama kecuali updater sendiri
         for item in os.listdir(extracted_folder):
