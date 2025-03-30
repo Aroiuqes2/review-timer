@@ -4,7 +4,7 @@ import threading
 
 # MAIN
 root = tk.Tk()
-root.title("Data Entry")
+root.title("Review Time")
 root.geometry("1000x450")
 root.config(bg="#2C2F33")
 root.iconbitmap('icon.ico')
