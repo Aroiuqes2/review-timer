@@ -7,6 +7,7 @@ import os
 import sys
 import zipfile
 import shutil
+import pyttsx3
 
 GITHUB_USER = "Aroiuqes2"
 REPO_NAME = "review-time"
@@ -25,6 +26,10 @@ root.iconbitmap("logo.ico")
 updateRoot = tk.Tk()
 updateRoot.title("Check for Update")
 updateRoot.geometry('300x200')
+
+tts_engine = pyttsx3.init()
+tts_engine.setProperty("rate", 150)
+
 
 # FRAMING
 input_frame = tk.Frame(root, padx=20, pady=20, bg="#23272A", relief="ridge", bd=2)
@@ -162,6 +167,13 @@ def submit():
     youtube_var.set("")
     osu_var.set("")
 
+# NOTIF
+def play_alarm(youtube_user, osu_user):
+    message = f"Time for {youtube_user} is expired!"
+    print(message)  # Debugging (opsional)
+    tts_engine.say(message)
+    tts_engine.runAndWait()
+
 # TIMER UPDATE
 def update_timer(timer_label, waktu):
     while waktu > 0:
@@ -173,7 +185,8 @@ def update_timer(timer_label, waktu):
         timer_label.config(text=f"{mins:02}:{secs:02}")
         time.sleep(1)
         waktu -= 1
-    timer_label.config(text="Waktu Habis!", fg="red")
+    timer_label.config(text="Timeout!", fg="green")
+    play_alarm(youtube_user)
 
 # DATA SEARCH/FILTER
 def filter_data(*args):
