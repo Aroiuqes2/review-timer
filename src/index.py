@@ -1,18 +1,26 @@
 import tkinter as tk
+from tkinter import messagebox
 import time
 import threading
-from tkinter import messagebox
 import requests
+import os
+import sys
+import zipfile
+import shutil
 
+GITHUB_USER = "Aroiuqes2"
+REPO_NAME = "review-time"
 CURRENT_VERSION = "1.0.0"
-GITHUB_REPO = "https://raw.githubusercontent.com/Aroiuqes2/review-timer/refs/heads/main/version.txt"
+
+GITHUB_VERSION_URL = f"https://raw.githubusercontent.com/Aroiuqes2/review-timer/refs/heads/main/version.txt"
+GITHUB_ZIP_URL = f"https://github.com/Aroiuqes2/review-timer/archive/refs/heads/main.zip"
 
 # MAIN
 root = tk.Tk()
 root.title("Review Time")
 root.geometry("1000x450")
 root.config(bg="#2C2F33")
-root.iconbitmap('icon.ico')
+root.iconbitmap("logo.ico")
 
 updateRoot = tk.Tk()
 updateRoot.title("Check for Update")
@@ -57,13 +65,73 @@ entries = []
 # UPDATE CHECK
 def check_update():
     try:
-        response = requests.get(GITHUB_REPO, timeout=5)
+        response = requests.get(GITHUB_VERSION_URL, timeout=5)
         latest_version = response.text.strip()
 
         if latest_version != CURRENT_VERSION:
-            messagebox.showinfo("Update Tersedia", f"Versi terbaru {latest_version} tersedia!\nSilakan update.")
+            update_prompt(latest_version)
+        else:
+            messagebox.showinfo("Update Checker", "Aplikasi sudah versi terbaru!")
     except Exception as e:
         messagebox.showerror("Error", f"Tidak dapat mengecek update: {e}")
+
+# NOTIF UPDATE
+def update_prompt(latest_version):
+    response = messagebox.askyesno("Update Tersedia",
+                                   f"Versi terbaru {latest_version} tersedia!\n"
+                                   "Apakah ingin mengupdate sekarang?")
+    if response:
+        update_application()
+
+# UPDATE PROSES
+def update_application():
+    try:
+        messagebox.showinfo("Update", "Mengunduh update terbaru...")
+
+        # Download file ZIP dari GitHub
+        response = requests.get(GITHUB_ZIP_URL, stream=True)
+        zip_path = "update.zip"
+
+        with open(zip_path, "wb") as file:
+            for chunk in response.iter_content(chunk_size=1024):
+                if chunk:
+                    file.write(chunk)
+
+        messagebox.showinfo("Update", "Update berhasil diunduh! Memperbarui aplikasi...")
+
+        # Ekstrak ZIP
+        with zipfile.ZipFile(zip_path, "r") as zip_ref:
+            zip_ref.extractall("update_temp")
+
+        # Dapatkan nama folder hasil ekstraksi
+        extracted_folder = f"update_temp/{REPO_NAME}-main"
+
+        # Hapus file lama kecuali updater sendiri
+        for item in os.listdir(extracted_folder):
+            src = os.path.join(extracted_folder, item)
+            dst = os.path.join(os.getcwd(), item)
+
+            if os.path.exists(dst):
+                if os.path.isdir(dst):
+                    shutil.rmtree(dst)
+                else:
+                    os.remove(dst)
+
+            shutil.move(src, dst)
+
+        # Bersihkan file update
+        os.remove(zip_path)
+        shutil.rmtree("update_temp")
+
+        messagebox.showinfo("Update", "Update berhasil! Restart aplikasi.")
+        restart_application()
+    except Exception as e:
+        messagebox.showerror("Update Gagal", f"Gagal mengupdate: {e}")
+
+# RESTART APP AFTER UPD
+def restart_application():
+    python = sys.executable
+    os.execl(python, python, *sys.argv)
 
 # SUBMIT
 def submit():
@@ -118,7 +186,8 @@ def filter_data(*args):
             entry_frame.pack_forget()
 
 tk.Label(updateRoot, text=f"Versi Saat Ini: {CURRENT_VERSION}", font=("Arial", 12)).pack(pady=10)
-tk.Button(updateRoot, text="Cek Update", command=check_update, font=("Arial", 12), bg="blue", fg="white").pack(pady=20)
+update_button = tk.Button(updateRoot, text="Cek Update", command=check_update, font=("Arial", 12), bg="blue", fg="white")
+update_button.pack(pady=20)
 
 tk.Label(filter_frame, text="Search:", font=("Arial", 10), fg="white", bg="#2C2F33").pack(anchor="w")
 search_entry = tk.Entry(filter_frame, textvariable=search_var, font=("Arial", 12), width=30)
