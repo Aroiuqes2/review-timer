@@ -92,6 +92,7 @@ def update_prompt(latest_version):
 def update_application():
     try:
         root.destroy()
+        updateRoot.destroy()
         messagebox.showinfo("Update", "Mengunduh update terbaru...")
 
         # DOWNLOAD FILE FROM GITHUB
