@@ -91,6 +91,7 @@ def update_prompt(latest_version):
 # UPDATE PROSES
 def update_application():
     try:
+        root.destroy()
         messagebox.showinfo("Update", "Mengunduh update terbaru...")
 
         # DOWNLOAD FILE FROM GITHUB
