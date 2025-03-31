@@ -11,14 +11,14 @@ import pyttsx3
 
 GITHUB_USER = "Aroiuqes2"
 REPO_NAME = "review-timer"
-CURRENT_VERSION = "1.0.6"
+CURRENT_VERSION = "1.0.7"
 
 GITHUB_VERSION_URL = f"https://raw.githubusercontent.com/Aroiuqes2/review-timer/refs/heads/main/version.txt"
 GITHUB_ZIP_URL = f"https://github.com/Aroiuqes2/review-timer/archive/refs/heads/main.zip"
 
 # MAIN
 root = tk.Tk()
-root.title("Revtime App")
+root.title("Revtim App")
 root.geometry("1000x450")
 root.config(bg="#2C2F33")
 root.iconbitmap("logo.ico")
