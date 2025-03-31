@@ -18,7 +18,7 @@ GITHUB_ZIP_URL = f"https://github.com/Aroiuqes2/review-timer/archive/refs/heads/
 
 # MAIN
 root = tk.Tk()
-root.title("Revtim App")
+root.title("Revtime App")
 root.geometry("1000x450")
 root.config(bg="#2C2F33")
 root.iconbitmap("logo.ico")
