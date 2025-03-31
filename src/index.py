@@ -11,7 +11,7 @@ import pyttsx3
 
 GITHUB_USER = "Aroiuqes2"
 REPO_NAME = "review-timer"
-CURRENT_VERSION = "1.0.5"
+CURRENT_VERSION = "1.0.6"
 
 GITHUB_VERSION_URL = f"https://raw.githubusercontent.com/Aroiuqes2/review-timer/refs/heads/main/version.txt"
 GITHUB_ZIP_URL = f"https://github.com/Aroiuqes2/review-timer/archive/refs/heads/main.zip"
