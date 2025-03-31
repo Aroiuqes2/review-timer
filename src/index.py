@@ -93,7 +93,7 @@ def update_application():
     try:
         messagebox.showinfo("Update", "Mengunduh update terbaru...")
 
-        # Download file ZIP dari GitHub
+        # DOWNLOAD FILE FROM GITHUB
         response = requests.get(GITHUB_ZIP_URL, stream=True)
         zip_path = "update.zip"
 
@@ -104,14 +104,13 @@ def update_application():
 
         messagebox.showinfo("Update", "Update berhasil diunduh! Memperbarui aplikasi...")
 
-        # Ekstrak ZIP
+        # EXTRACT
         with zipfile.ZipFile(zip_path, "r") as zip_ref:
             zip_ref.extractall("update_temp")
 
-        # Dapatkan nama folder hasil ekstraksi
-        extracted_folder = f"update_temp/{REPO_NAME}r-main"
+        extracted_folder = f"update_temp/review-timer-main"
 
-        # Hapus file lama kecuali updater sendiri
+        # REMOVE OLD FILE, REPLACE NEW FILE
         for item in os.listdir(extracted_folder):
             src = os.path.join(extracted_folder, item)
             dst = os.path.join(os.getcwd(), item)
@@ -124,7 +123,7 @@ def update_application():
 
             shutil.move(src, dst)
 
-        # Bersihkan file update
+        # CLEARING CACHE
         os.remove(zip_path)
         shutil.rmtree("update_temp")
 
