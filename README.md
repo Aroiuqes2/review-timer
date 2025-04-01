@@ -1,5 +1,5 @@
 # 📌 Review Timer
-Program sederhana menggunakan **Python Tkinter** untuk memasukkan data **YouTube User** dan **Osu User**, dengan fitur **timer per data**.
+Program sederhana menggunakan **Python Tkinter** untuk memasukkan data **Osu User**, dengan fitur **timer per data**.
 
 
 
